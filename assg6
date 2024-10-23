@@ -2,3 +2,41 @@
 SELECT first_name, job_id, salary
 FROM HR.employees
 WHERE salary < (SELECT salary FROM HR.employees WHERE employee_id = 106);
+
+--2. Display the name of the employees who get the second-highest salary.
+SELECT first_name
+FROM HR.employees
+WHERE salary = (SELECT MAX(salary) 
+                FROM HR.employees 
+                WHERE salary < (SELECT MAX(salary) FROM HR.employees));
+
+--3. Display first_name, last_name, and salary of those sales representatives who earn a higher salary than the minimum salary a sales manager receives.
+SELECT first_name, last_name, salary
+FROM HR.employees
+WHERE job_id = 'SA_REP'
+  AND salary > (SELECT MIN(salary) 
+                FROM HR.employees 
+                WHERE job_id = 'SA_MAN');
+
+--4. List the employees who make the same salary as other employees who have the same job as employee_id = 7521.
+SELECT first_name, job_id, salary
+FROM HR.employees
+WHERE salary IN (
+    SELECT salary
+    FROM HR.employees
+    WHERE job_id = (SELECT job_id FROM HR.employees WHERE employee_id = 101)
+);
+
+--5. Display the employee details with a salary less than those whose job is ‘ST_MAN’.
+SELECT employee_id, first_name, last_name, job_id, salary
+FROM HR.employees
+WHERE salary < (SELECT MIN(salary) 
+                FROM HR.employees 
+                WHERE job_id = 'ST_MAN');
+
+--6. Find the employees whose salary is the same as the minimum salary of the employees in their department.
+SELECT first_name, last_name, salary, department_id
+FROM HR.employees e
+WHERE salary = (SELECT MIN(salary)
+                FROM HR.employees
+                WHERE department_id = e.department_id);
