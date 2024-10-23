@@ -1,0 +1,4 @@
+--1. Find out the first_name, job_id, and salary of the employees whose salaries are less than that of an employee whose employee_id = 7876.
+SELECT first_name, job_id, salary
+FROM HR.employees
+WHERE salary < (SELECT salary FROM HR.employees WHERE employee_id = 106);
